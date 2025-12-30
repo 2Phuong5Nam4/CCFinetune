@@ -1,0 +1,164 @@
+{
+  "conversation_control": [
+    {
+      "name": "close_conversation",
+      "description": "Closes the current conversation with a closing message",
+      "parameters": {
+        "type": "object",
+        "properties": {
+          "close_message": {
+            "type": "string",
+            "description": "The closing message to display"
+          }
+        },
+        "required": ["close_message"]
+      },
+      "returns": {
+        "type": "null",
+        "description": "No return value"
+      },
+      "use_cases": ["Survey completed successfully", "Customer is busy", "Wrong phone number", "Customer satisfied"]
+    },
+    {
+      "name": "pause_conversation",
+      "description": "Pauses the conversation and schedules a callback",
+      "parameters": {
+        "type": "object",
+        "properties": {
+          "reason": {
+            "type": "string",
+            "description": "Reason for pausing"
+          },
+          "callback_time": {
+            "type": "string",
+            "description": "Preferred callback time"
+          }
+        },
+        "required": ["reason"]
+      },
+      "returns": {
+        "type": "object",
+        "properties": {
+          "scheduled": {
+            "type": "boolean"
+          }
+        }
+      },
+      "use_cases": ["Customer temporarily busy", "Need more information from customer", "Technical issues during call"]
+    },
+    {
+      "name": "transfer_to_human",
+      "description": "Transfers conversation to human agent",
+      "parameters": {
+        "type": "object",
+        "properties": {
+          "reason": {
+            "type": "string",
+            "description": "Reason for transfer"
+          },
+          "priority": {
+            "type": "string",
+            "enum": ["low", "medium", "high"],
+            "description": "Transfer priority level"
+          }
+        },
+        "required": ["reason", "priority"]
+      },
+      "returns": {
+        "type": "object",
+        "properties": {
+          "transfer_successful": {
+            "type": "boolean"
+          }
+        }
+      },
+      "use_cases": ["Customer angry or upset", "Complex complaint requiring escalation", "Special request beyond AI capability"]
+    },
+    {
+      "name": "schedule_followup",
+      "description": "Schedules a follow-up call or message",
+      "parameters": {
+        "type": "object",
+        "properties": {
+          "followup_date": {
+            "type": "string",
+            "description": "Date for follow-up"
+          },
+          "notes": {
+            "type": "string",
+            "description": "Notes about what to follow up on"
+          }
+        },
+        "required": ["followup_date"]
+      },
+      "returns": {
+        "type": "object",
+        "properties": {
+          "scheduled": {
+            "type": "boolean"
+          }
+        }
+      },
+      "use_cases": ["Pending issue resolution", "Customer wants callback later", "Check-in after problem reported"]
+    }
+  ],
+  "data_collection": [
+    {
+      "name": "save_nps_score",
+      "description": "Saves NPS score to database",
+      "parameters": {
+        "type": "object",
+        "properties": {
+          "score": {
+            "type": "integer",
+            "minimum": 0,
+            "maximum": 10,
+            "description": "NPS score from 0 to 10"
+          },
+          "customer_id": {
+            "type": "string",
+            "description": "Customer identifier"
+          }
+        },
+        "required": ["score", "customer_id"]
+      },
+      "returns": {
+        "type": "object",
+        "properties": {
+          "saved": {
+            "type": "boolean"
+          }
+        }
+      },
+      "use_cases": ["Customer provided NPS score"]
+    },
+    {
+      "name": "save_feedback",
+      "description": "Saves customer feedback text to database",
+      "parameters": {
+        "type": "object",
+        "properties": {
+          "feedback": {
+            "type": "string",
+            "description": "Customer feedback content"
+          },
+          "category": {
+            "type": "string",
+            "enum": ["product", "service", "delivery", "app", "staff", "pricing", "other"],
+            "description": "Feedback category"
+          }
+        },
+        "required": ["feedback"]
+      },
+      "returns": {
+        "type": "object",
+        "properties": {
+          "saved": {
+            "type": "boolean"
+          }
+        }
+      },
+      "use_cases": ["Customer shares detailed feedback", "Customer mentions specific issues"]
+    }
+  ]
+}
